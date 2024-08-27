@@ -1,0 +1,32 @@
+{
+    "name": "glomberg/wpdb-unsafe-methods",
+    "description": "Psalm plugin to forbid calling provided `$wpdb` methods",
+    "type": "psalm-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Glomberg",
+            "homepage": "https://github.com/Glomberg"
+        }
+    ],
+    "require": {
+        "vimeo/psalm": "^4.8",
+        "ext-simplexml": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5.5",
+        "squizlabs/php_codesniffer": "^3.3"
+    },
+    "extra": {
+        "psalm": {
+            "pluginClass": "Glomberg\\WpdbUnsafeMethods\\Plugin"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Glomberg\\WpdbUnsafeMethods\\": [
+                "./src"
+            ]
+        }
+    }
+}
