@@ -50,6 +50,14 @@ final class WpdbUnsafeMethodsHandler implements AfterExpressionAnalysisInterface
                 count($method_args) === 1 &&
                 in_array($method_args[0]->value->getType(), self::$unsafe_variables_types, true)
             ) {
+                $code_location = new CodeLocation($event->getStatementsSource(), $expression);
+                $file_path = $code_location->file_path;
+                $line_number = $code_location->getLineNumber() - 2;
+                $file_lines = file($file_path);
+                if (isset($file_lines[$line_number]) && strpos($file_lines[$line_number], '@psalm-suppress WpdbUnsafeMethodsIssue') !== false) {
+                    return true;
+                }
+
                 IssueBuffer::maybeAdd(
                     new WpdbUnsafeMethodsIssue(
                         "Forbidden method call: {$method_name}",
@@ -65,6 +73,14 @@ final class WpdbUnsafeMethodsHandler implements AfterExpressionAnalysisInterface
                     isset(self::$collected_variables[$var_name]) &&
                     in_array(self::$collected_variables[$var_name]['expression_type'], self::$unsafe_variables_types, true)
                 ) {
+                    $code_location = new CodeLocation($event->getStatementsSource(), $expression);
+                    $file_path = $code_location->file_path;
+                    $line_number = $code_location->getLineNumber() - 2;
+                    $file_lines = file($file_path);
+                    if (isset($file_lines[$line_number]) && strpos($file_lines[$line_number], '@psalm-suppress WpdbUnsafeMethodsIssue') !== false) {
+                        return true;
+                    }
+
                     IssueBuffer::maybeAdd(
                         new WpdbUnsafeMethodsIssue(
                             "Forbidden method call: {$method_name}",
